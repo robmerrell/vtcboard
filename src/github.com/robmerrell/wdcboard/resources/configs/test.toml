@@ -1,0 +1,5 @@
+env = "test"
+
+[database]
+host = "localhost"
+db = "wdcboard_test"

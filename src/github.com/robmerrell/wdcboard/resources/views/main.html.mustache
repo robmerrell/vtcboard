@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+  <head>
+    <title>WDCBoard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+    <header class="pure-g-r">
+      <div class="pure-u-2-5 logo">
+        Worldcoin dashboard
+      </div>
+
+      <div class="pure-u-3-5 donate">
+        Donate to the Worldcoin Foundation if you find this site useful: WkNXtwJuEjRSWPQVHQSyUavfWbKdknMsGD
+      </div>
+    </header>
+
+    <div class="wrapper">
+      <section class="pure-g-r">
+        <div class="pure-u-1-4">
+          <div class="stat-box usd-stat">
+            <div class="stat-title">
+              USD
+            </div>
+
+            <div class="stat-value">
+              ${{usd}}
+            </div>
+          </div>
+        </div>
+
+        <div class="pure-u-1-4">
+          <div class="stat-box gray-stat">
+            <div class="stat-title">
+              BTC
+            </div>
+
+            <div class="stat-value">
+              {{btc}}
+            </div>
+          </div>
+        </div>
+
+        <div class="pure-u-1-4">
+          <div class="stat-box gray-stat">
+            <div class="stat-title">
+              MARKET CAP (USD)
+            </div>
+
+            <div class="stat-value">
+              ${{marketCap}}
+            </div>
+          </div>
+        </div>
+
+        <div class="pure-u-1-4">
+          <div class="stat-box {{changeStyle}}">
+            <div class="stat-title">
+              24 HOUR CHANGE
+            </div>
+
+            <div class="stat-value">
+              {{change}}%
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-title">24 HOURS (CRYPTSY/USD)</div>
+        <div id="priceChart"></div>
+      </section>
+
+      <section>
+        <div class="section-title">DISCUSSION</div>
+        <div class="pure-g-r">
+          <div class="pure-u-1-2">
+            <div class="news-title">
+              Worldcoin Forum
+            </div>
+            <ul class="news-body">
+              {{#forum}}
+                <li><a href="{{Url}}">{{Title}}</a></li>
+              {{/forum}}
+            </ul>
+          </div>
+
+          <div class="pure-u-1-2">
+            <div class="news-title">
+              /r/worldcoin
+            </div>
+            <ul class="news-body">
+              {{#reddit}}
+                <li><a href="{{Url}}">{{Title}}</a></li>
+              {{/reddit}}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section style="border: none;">
+        <div class="section-title">MINING</div>
+        <div class="pure-g-r">
+          <div class="pure-u-1-4">
+            <div class="stat-box mining-stat">
+              <div class="stat-title">
+                NETWORK HASHRATE
+              </div>
+
+              <div class="stat-value">
+                {{hashRate}}
+              </div>
+            </div>
+          </div>
+
+          <div class="pure-u-1-4">
+            <div class="stat-box mining-stat">
+              <div class="stat-title">
+                DIFFICULTY
+              </div>
+
+              <div class="stat-value">
+                {{difficulty}}
+              </div>
+            </div>
+          </div>
+
+          <div class="pure-u-1-4">
+            <div class="stat-box mining-stat">
+              <div class="stat-title">
+                TOTAL MINED 
+              </div>
+
+              <div class="stat-value">
+                {{mined}}
+              </div>
+            </div>
+          </div>
+
+          <div class="pure-u-1-4">
+            <div class="stat-box mining-stat">
+              <div class="stat-title">
+                REMAINING COINS TO MINE
+              </div>
+
+              <div class="stat-value">
+                {{remaining}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      WDCBoard was built by <a href="https://www.twitter.com/robmerrell">@robmerrell</a> and is free software released under the MIT license.<br>
+      Source: <a href="https://www.github.com/robmerrell/wdcboard">robmerrell/wdcboard</a><br>
+      Forum Post: <a href="http://worldcoinforum.org/topic/1168-worldcoin-dashboard/">Worldcoin Forum</a><br>
+    </footer>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-47074432-1', 'wdcboard.com');
+      ga('send', 'pageview');
+    </script>
+    
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.flot.min.js"></script>
+    <script src="/js/jquery.flot.time.min.js"></script>
+    <script>
+      $(function() {
+        var dataset = [{{averages}}];
+
+        var series = [{
+          data: dataset,
+          shadowSize: 0,
+          color: "#0263b0",
+          lines: {
+            fill: true
+          }
+        }];
+
+        loadPlot = function() {
+          $.plot("#priceChart", series, {
+            grid: {
+              borderWidth: 0
+            },
+            xaxis: {
+              mode: "time",
+              timeformat: ""
+            }
+          });        
+        }
+
+        loadPlot();
+        window.onresize = function(event) {
+          loadPlot();
+        }
+      });
+    </script>    
+  </body>
+</html>

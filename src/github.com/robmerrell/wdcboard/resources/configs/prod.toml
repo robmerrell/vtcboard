@@ -1,0 +1,5 @@
+env = "prod"
+
+[database]
+host = "localhost"
+db = "wdcboard"

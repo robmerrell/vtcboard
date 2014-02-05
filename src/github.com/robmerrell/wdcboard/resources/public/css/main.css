@@ -1,0 +1,124 @@
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #c2c2c2;
+  color: #0c0c0c;
+}
+
+section {
+  border-bottom: 1px solid #adadad;
+  padding: 30px 10px;
+}
+
+a {
+  color: #0263b0;
+}
+
+.wrapper {
+  background-color: white;
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 10px;
+}
+
+.section-title {
+  background-color: #0263b0;
+  color: white;
+  display: inline-block;
+  font-size: 1.15em;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+
+/*********** HEADER ************/
+
+header {
+  background-color: #0263b0;
+  border-bottom: 1px solid #a1a1a1;
+  color: white;
+  padding: 10px 20px 10px 20px;
+}
+
+.logo {
+  font-size: 1.5em;
+}
+
+.donate {
+  font-size: 0.8em;
+  margin-top: 5px;
+  text-align: right;
+}
+
+/*********** STAT BOXES ************/
+.stat-box {
+  color: white;
+  max-width: 300px;
+}
+
+.stat-title {
+  font-size: 1em;
+  padding: 3px 0 0 10px;
+}
+
+.stat-value {
+  font-size: 2em;
+  padding: 10px 0 25px 0;
+  text-align: center;
+}
+
+.usd-stat {
+  background-color: #81b1d8;
+}
+
+.gray-stat {
+  background-color: #a1a1a1;
+}
+
+.mining-stat {
+  background-color: #a1a1a1;
+}
+
+.percent-change-stat-up {
+  background-color: #27ae60;
+}
+
+.percent-change-stat-down {
+  background-color: #c0392b;
+}
+
+
+/*********** NEWS ************/
+.news-title {
+  color: #777;
+  font-size: 1.5em;
+  padding: 10px 0 10px 10px;
+}
+
+ul.news-body {
+  list-style-type: none;
+  padding: 0 10px;
+  margin: 0;
+}
+
+ul.news-body li {
+  padding-bottom: 15px;
+}
+
+#priceChart {
+  height: 350px;
+  min-width: 200px;
+}
+
+footer {
+  padding: 20px 0;
+  text-align: center;
+}
+
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) { 
+  .stat-title {
+    font-size: 0.6em;
+  }
+}

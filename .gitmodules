@@ -1,0 +1,21 @@
+[submodule "src/github.com/robmerrell/comandante"]
+	path = src/github.com/robmerrell/comandante
+	url = git@github.com:robmerrell/comandante.git
+[submodule "src/github.com/pelletier/go-toml"]
+	path = src/github.com/pelletier/go-toml
+	url = git@github.com:pelletier/go-toml.git
+[submodule "src/github.com/codegangsta/martini"]
+	path = src/github.com/codegangsta/martini
+	url = git://github.com/codegangsta/martini.git
+[submodule "src/github.com/codegangsta/inject"]
+	path = src/github.com/codegangsta/inject
+	url = git://github.com/codegangsta/inject.git
+[submodule "src/github.com/hoisie/mustache"]
+	path = src/github.com/hoisie/mustache
+	url = git://github.com/hoisie/mustache.git
+[submodule "src/github.com/SlyMarbo/rss"]
+	path = src/github.com/SlyMarbo/rss
+	url = git://github.com/SlyMarbo/rss
+[submodule "src/github.com/PuerkitoBio/goquery"]
+	path = src/github.com/PuerkitoBio/goquery
+	url = git://github.com/PuerkitoBio/goquery.git

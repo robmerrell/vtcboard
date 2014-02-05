@@ -3,17 +3,17 @@ package main
 import (
 	"fmt"
 	"github.com/robmerrell/comandante"
-	"github.com/robmerrell/wdcboard/cmds"
-	"github.com/robmerrell/wdcboard/config"
-	"github.com/robmerrell/wdcboard/models"
-	"github.com/robmerrell/wdcboard/updaters"
+	"github.com/robmerrell/vtcboard/cmds"
+	"github.com/robmerrell/vtcboard/config"
+	"github.com/robmerrell/vtcboard/models"
+	"github.com/robmerrell/vtcboard/updaters"
 	"os"
 )
 
 func main() {
 	// get the environment for the config
 	appEnv := ""
-	env := os.Getenv("WDCBOARD_ENV")
+	env := os.Getenv("VTCBOARD_ENV")
 	switch env {
 	case "dev", "test", "prod":
 		appEnv = env
@@ -30,7 +30,7 @@ func main() {
 	}
 	defer models.CloseDB()
 
-	bin := comandante.New("wdcboard", "Worldcoin dashboard")
+	bin := comandante.New("vtcboard", "Vertcoin dashboard")
 	bin.IncludeHelp()
 
 	// add indexes to the database
@@ -38,8 +38,8 @@ func main() {
 	addIndexes.Documentation = cmds.IndexDoc
 	bin.RegisterCommand(addIndexes)
 
-	// update worldcoin prices
-	updateCoinPrices := comandante.NewCommand("update_coin_prices", "Get updated worldcoin prices", cmds.UpdateAction(&updaters.CoinPrice{}))
+	// update vertcoin prices
+	updateCoinPrices := comandante.NewCommand("update_coin_prices", "Get updated vertcoin prices", cmds.UpdateAction(&updaters.CoinPrice{}))
 	updateCoinPrices.Documentation = cmds.UpdateCoinPricesDoc
 	bin.RegisterCommand(updateCoinPrices)
 
@@ -53,18 +53,13 @@ func main() {
 	updateNetwork.Documentation = cmds.UpdateCoinPricesDoc
 	bin.RegisterCommand(updateNetwork)
 
-	// update forum posts
-	updateForum := comandante.NewCommand("update_forum", "Get new forum topics", cmds.UpdateAction(&updaters.Forum{}))
-	updateForum.Documentation = cmds.UpdateForumDoc
-	bin.RegisterCommand(updateForum)
-
 	// update reddit stories
-	updateReddit := comandante.NewCommand("update_reddit", "Get new /r/worldcoin posts", cmds.UpdateAction(&updaters.Reddit{}))
+	updateReddit := comandante.NewCommand("update_reddit", "Get new /r/vertcoin posts", cmds.UpdateAction(&updaters.Reddit{}))
 	updateReddit.Documentation = cmds.UpdateRedditDoc
 	bin.RegisterCommand(updateReddit)
 
 	// run web service
-	webService := comandante.NewCommand("serve", "Start the WDCBoard web server", cmds.ServeAction)
+	webService := comandante.NewCommand("serve", "Start the VTCBoard web server", cmds.ServeAction)
 	webService.Documentation = cmds.ServerDoc
 	bin.RegisterCommand(webService)
 

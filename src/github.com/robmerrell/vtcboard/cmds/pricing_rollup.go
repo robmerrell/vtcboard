@@ -1,7 +1,7 @@
 package cmds
 
 import (
-	"github.com/robmerrell/wdcboard/models"
+	"github.com/robmerrell/vtcboard/models"
 	"time"
 )
 

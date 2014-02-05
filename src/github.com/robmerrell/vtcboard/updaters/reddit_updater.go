@@ -2,7 +2,7 @@ package updaters
 
 import (
 	"github.com/SlyMarbo/rss"
-	"github.com/robmerrell/wdcboard/models"
+	"github.com/robmerrell/vtcboard/models"
 )
 
 var subredditUrl = "http://www.reddit.com/r/worldcoin/.rss"

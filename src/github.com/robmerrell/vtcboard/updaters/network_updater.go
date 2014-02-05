@@ -2,7 +2,7 @@ package updaters
 
 import (
 	"fmt"
-	"github.com/robmerrell/wdcboard/models"
+	"github.com/robmerrell/vtcboard/models"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -12,9 +12,9 @@ import (
 
 type Network struct{}
 
-var networkBaseUrl = "http://wdc.cryptocoinexplorer.com/chain/Worldcoin/q"
+var networkBaseUrl = "http://explorer.vertcoin.org/chain/Vertcoin/q"
 
-// Update retrieves WDC netork information from a blockchain api.
+// Update retrieves VTC netork information from a blockchain api.
 func (n *Network) Update() error {
 	hashRate, err := getHashRate()
 	if err != nil {
@@ -65,12 +65,18 @@ func networkQuery(url string) (string, error) {
 
 // getHashRate gets the current hash rate and converts into a human readable number.
 func getHashRate() (string, error) {
-	hash, err := networkQuery("/getnetworkhash")
+	hash, err := networkQuery("/nethash/120/-121/-1")
 	if err != nil {
 		return "", err
 	}
 
-	converted, err := strconv.ParseFloat(hash, 64)
+	split := strings.Split(hash, "\n")
+	info := strings.TrimSpace(split[len(split)-1])
+
+	nethashSplit := strings.Split(info, ",")
+	nethash := nethashSplit[len(nethashSplit)-1]
+
+	converted, err := strconv.ParseFloat(nethash, 64)
 	if err != nil {
 		return "", err
 	}

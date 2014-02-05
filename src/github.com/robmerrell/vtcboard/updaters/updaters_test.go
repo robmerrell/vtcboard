@@ -2,8 +2,8 @@ package updaters
 
 import (
 	"fmt"
-	"github.com/robmerrell/wdcboard/config"
-	"github.com/robmerrell/wdcboard/models"
+	"github.com/robmerrell/vtcboard/config"
+	"github.com/robmerrell/vtcboard/models"
 	"labix.org/v2/mgo/bson"
 	. "launchpad.net/gocheck"
 	"net/http"
@@ -121,7 +121,13 @@ var _ = Suite(&networkSuite{})
 
 func (s *networkSuite) SetUpSuite(c *C) {
 	s.hashRateServer = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		res := "6792543827"
+		res := `
+			Append ?format=json to URL for headerless, JSON output.
+
+			blockNumber,time,target,avgTargetSinceLast,difficulty,hashesToWin,avgIntervalSinceLast,netHashPerSecond
+			START DATA
+			29657,1391569554,377235133641975003144577769025457285592497241602485749258339221504,397219874645251061773117387374754533321251451036139748744992129023,71.467,306949376955,153,1911098884
+		`
 		fmt.Fprintln(w, res)
 	}))
 
@@ -157,7 +163,7 @@ func (s *networkSuite) TearDownSuite(c *C) {
 func (s *networkSuite) TestNetworkCalls(c *C) {
 	replaceUrl(s.hashRateServer.URL, &networkBaseUrl, func() {
 		value, _ := getHashRate()
-		c.Check(value, Equals, "6792.54")
+		c.Check(value, Equals, "1911.10")
 	})
 
 	replaceUrl(s.difficultyServer.URL, &networkBaseUrl, func() {

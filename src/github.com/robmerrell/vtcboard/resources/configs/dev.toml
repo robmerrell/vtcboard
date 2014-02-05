@@ -1,5 +1,5 @@
-env = "prod"
+env = "dev"
 
 [database]
 host = "localhost"
-db = "wdcboard"
+db = "vtcboard"

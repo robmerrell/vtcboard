@@ -2,7 +2,7 @@ package updaters
 
 import (
 	"encoding/json"
-	"github.com/robmerrell/wdcboard/models"
+	"github.com/robmerrell/vtcboard/models"
 	"io/ioutil"
 	"net/http"
 	"strconv"

@@ -3,7 +3,7 @@ package updaters
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
-	"github.com/robmerrell/wdcboard/models"
+	"github.com/robmerrell/vtcboard/models"
 	"strings"
 	"time"
 )

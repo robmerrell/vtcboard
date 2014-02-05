@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/robmerrell/wdcboard/config"
+	"github.com/robmerrell/vtcboard/config"
 	"labix.org/v2/mgo/bson"
 	. "launchpad.net/gocheck"
 	"testing"

@@ -1,6 +1,6 @@
 set :user, 'rob'
-set :domain, 'wdcboard.com'
-set :deploy_to, '/home/rob/wdcboard'
+set :domain, 'vtcboard.com'
+set :deploy_to, '/home/rob/vtcboard'
 
 # Manually create these paths in shared/ (eg: shared/config/database.yml) in your server.
 # They will be linked in the 'deploy:link_shared_paths' step.
@@ -23,18 +23,18 @@ end
 
 task :compile do
   puts "building sources"
-  system "cd src/github.com/robmerrell/wdcboard && gxc build linux/amd64"
+  system "cd src/github.com/robmerrell/vtcboard && gxc build linux/amd64"
 end
 
 task :upload_binary do
   puts "uploading binary"
-  system "scp src/github.com/robmerrell/wdcboard/wdcboard-linux-amd64 #{user}@#{domain}:#{deploy_to}/tmp/wdcboard"
-  queue echo_cmd %[mv "#{deploy_to}/tmp/wdcboard" "wdcboard"]
+  system "scp src/github.com/robmerrell/vtcboard/vtcboard-linux-amd64 #{user}@#{domain}:#{deploy_to}/tmp/vtcboard"
+  queue echo_cmd %[mv "#{deploy_to}/tmp/vtcboard" "vtcboard"]
 end
 
 task :upload_resources do
   puts "uploading resources"
-  system "scp -r src/github.com/robmerrell/wdcboard/resources #{user}@#{domain}:#{deploy_to}/tmp/resources"
+  system "scp -r src/github.com/robmerrell/vtcboard/resources #{user}@#{domain}:#{deploy_to}/tmp/resources"
   queue echo_cmd %[mv "#{deploy_to}/tmp/resources" "resources"]
 end
 
@@ -46,7 +46,7 @@ task :deploy => :environment do
     invoke :upload_resources
 
     to :launch do
-      queue "sudo restart wdcboard"
+      queue "sudo restart vtcboard"
     end
   end
 end

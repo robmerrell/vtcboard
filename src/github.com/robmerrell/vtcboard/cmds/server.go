@@ -120,7 +120,7 @@ func ServeAction() error {
 		return "ok"
 	})
 
-	m.Run()
+	http.ListenAndServe(":4000", m)
 
 	return nil
 }

@@ -133,6 +133,11 @@ func generateTplVars(price *models.Price, network *models.Network) map[string]st
 		changeStyle = "percent-change-stat-down"
 	}
 
+	percentChange := "100"
+	if price.Cryptsy.PercentChange != "" {
+		percentChange = price.Cryptsy.PercentChange
+	}
+
 	// marketcap
 	minedNum, _ := strconv.Atoi(network.Mined)
 	marketCap := float64(minedNum) * price.Cryptsy.Usd
@@ -144,7 +149,7 @@ func generateTplVars(price *models.Price, network *models.Network) map[string]st
 		"usd":         lib.RenderFloat("", price.Cryptsy.Usd),
 		"btc":         strconv.FormatFloat(price.Cryptsy.Btc, 'f', 8, 64),
 		"marketCap":   lib.RenderInteger("", int(marketCap)),
-		"change":      price.Cryptsy.PercentChange,
+		"change":      percentChange,
 		"changeStyle": changeStyle,
 
 		"hashRate":   lib.RenderFloatFromString("", network.HashRate),

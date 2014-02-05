@@ -58,8 +58,15 @@ func ServeAction() error {
 			return ""
 		}
 
-		// get reddit posts
-		reddit, err := models.GetLatestPosts(conn, "reddit", 8)
+		// /r/vertcoin posts
+		redditVertcoin, err := models.GetLatestPosts(conn, "/r/vertcoin", 8)
+		if err != nil {
+			webError(err, res)
+			return ""
+		}
+
+		// /r/vertmarket posts
+		redditVertmarket, err := models.GetLatestPosts(conn, "/r/vertmarket", 8)
 		if err != nil {
 			webError(err, res)
 			return ""
@@ -73,7 +80,7 @@ func ServeAction() error {
 		}
 
 		// generate the HTML
-		valueMap := map[string]interface{}{"reddit": reddit, "forum": forum, "averages": parsedAverages}
+		valueMap := map[string]interface{}{"redditVertcoin": redditVertcoin, "redditVertmarket": redditVertmarket, "forum": forum, "averages": parsedAverages}
 		return mainView.Render(generateTplVars(price, network), valueMap)
 	})
 
@@ -131,7 +138,7 @@ func generateTplVars(price *models.Price, network *models.Network) map[string]st
 	marketCap := float64(minedNum) * price.Cryptsy.Usd
 
 	// coins left to be mined
-	remainingCoins := 265420800 - minedNum
+	remainingCoins := 84000000 - minedNum
 
 	vars := map[string]string{
 		"usd":         lib.RenderFloat("", price.Cryptsy.Usd),

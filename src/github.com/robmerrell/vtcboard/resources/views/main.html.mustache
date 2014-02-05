@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>WDCBoard</title>
+    <title>VTCBoard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
     <link rel="stylesheet" href="/css/main.css">
@@ -10,11 +10,11 @@
   <body>
     <header class="pure-g-r">
       <div class="pure-u-2-5 logo">
-        Worldcoin dashboard
+        Vertcoin dashboard
       </div>
 
       <div class="pure-u-3-5 donate">
-        Donate to the Worldcoin Foundation if you find this site useful: WkNXtwJuEjRSWPQVHQSyUavfWbKdknMsGD
+        Donate if you find this site useful: VocJSuB6ajWWYAEZcjSkYFbfy7zpeRjSiT
       </div>
     </header>
 
@@ -35,7 +35,7 @@
         <div class="pure-u-1-4">
           <div class="stat-box gray-stat">
             <div class="stat-title">
-              BTC
+              BTC (CRYPTSY)
             </div>
 
             <div class="stat-value">
@@ -79,23 +79,23 @@
         <div class="pure-g-r">
           <div class="pure-u-1-2">
             <div class="news-title">
-              Worldcoin Forum
+              /r/vertcoin
             </div>
             <ul class="news-body">
-              {{#forum}}
+              {{#redditVertcoin}}
                 <li><a href="{{Url}}">{{Title}}</a></li>
-              {{/forum}}
+              {{/redditVertcoin}}
             </ul>
           </div>
 
           <div class="pure-u-1-2">
             <div class="news-title">
-              /r/worldcoin
+              /r/vertmarket
             </div>
             <ul class="news-body">
-              {{#reddit}}
+              {{#redditVertmarket}}
                 <li><a href="{{Url}}">{{Title}}</a></li>
-              {{/reddit}}
+              {{/redditVertmarket}}
             </ul>
           </div>
         </div>
@@ -158,7 +158,6 @@
     <footer>
       WDCBoard was built by <a href="https://www.twitter.com/robmerrell">@robmerrell</a> and is free software released under the MIT license.<br>
       Source: <a href="https://www.github.com/robmerrell/vtcboard">robmerrell/vtcboard</a><br>
-      Forum Post: <a href="http://worldcoinforum.org/topic/1168-worldcoin-dashboard/">Worldcoin Forum</a><br>
     </footer>
 
     <script>

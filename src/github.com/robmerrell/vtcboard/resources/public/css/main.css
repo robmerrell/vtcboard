@@ -13,7 +13,7 @@ section {
 }
 
 a {
-  color: #0263b0;
+  color: #008b00;
 }
 
 .wrapper {
@@ -24,7 +24,7 @@ a {
 }
 
 .section-title {
-  background-color: #0263b0;
+  background-color: #008b00;
   color: white;
   display: inline-block;
   font-size: 1.15em;
@@ -36,7 +36,7 @@ a {
 /*********** HEADER ************/
 
 header {
-  background-color: #0263b0;
+  background-color: #008b00;
   border-bottom: 1px solid #a1a1a1;
   color: white;
   padding: 10px 20px 10px 20px;
@@ -70,7 +70,7 @@ header {
 }
 
 .usd-stat {
-  background-color: #81b1d8;
+  background-color: #008b00;
 }
 
 .gray-stat {

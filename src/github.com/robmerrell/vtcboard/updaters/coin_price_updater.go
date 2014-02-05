@@ -10,11 +10,11 @@ import (
 )
 
 var coinbaseUrl = "https://coinbase.com/api/v1/currencies/exchange_rates"
-var cryptsyUrl = "http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=14"
+var cryptsyUrl = "http://pubapi.cryptsy.com/api.php?method=singlemarketdata&marketid=151"
 
 type CoinPrice struct{}
 
-// Update retrieves WDC buy prices in both USD and BTC and saves
+// Update retrieves VTC buy prices in both USD and BTC and saves
 // the prices to the database.
 func (c *CoinPrice) Update() error {
 	usd, err := coinbaseQuote()
@@ -61,7 +61,7 @@ func coinbaseQuote() (float64, error) {
 	return strconv.ParseFloat(value.Btc, 64)
 }
 
-// cryptsyQuote gets the current WDC/BTC value from cryptsy.
+// cryptsyQuote gets the current VTC/BTC value from cryptsy.
 func cryptsyQuote() (float64, error) {
 	resp, err := http.Get(cryptsyUrl)
 	if err != nil {
@@ -73,7 +73,7 @@ func cryptsyQuote() (float64, error) {
 	var value struct {
 		Return struct {
 			Markets struct {
-				WDC struct {
+				VTC struct {
 					RecentTrades []map[string]string
 				}
 			}
@@ -83,5 +83,5 @@ func cryptsyQuote() (float64, error) {
 		return 0.0, err
 	}
 
-	return strconv.ParseFloat(value.Return.Markets.WDC.RecentTrades[0]["price"], 64)
+	return strconv.ParseFloat(value.Return.Markets.VTC.RecentTrades[0]["price"], 64)
 }

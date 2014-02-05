@@ -5,20 +5,31 @@ import (
 	"github.com/robmerrell/vtcboard/models"
 )
 
-var subredditUrl = "http://www.reddit.com/r/worldcoin/.rss"
-
 type Reddit struct{}
 
-// Update retrieves any new stores on the worldcoin subreddit.
+// Update retrieves any new stores on the vertcoin subreddit.
 func (r *Reddit) Update() error {
 	conn := models.CloneConnection()
 	defer conn.Close()
 
-	posts, err := getNewRedditPosts()
+	vertcoinPosts, err := getNewRedditPosts("http://www.reddit.com/r/vertcoin/.rss", "/r/vertcoin")
 	if err != nil {
 		return err
 	}
 
+	if err := savePosts(vertcoinPosts, conn); err != nil {
+		return err
+	}
+
+	vertmarketPosts, err := getNewRedditPosts("http://www.reddit.com/r/vertmarket/.rss", "/r/vertmarket")
+	if err != nil {
+		return err
+	}
+
+	return savePosts(vertmarketPosts, conn)
+}
+
+func savePosts(posts []*models.Post, conn *models.MgoConnection) error {
 	for _, post := range posts {
 		if err := post.Insert(conn); err != nil {
 			return err
@@ -28,12 +39,12 @@ func (r *Reddit) Update() error {
 	return nil
 }
 
-func getNewRedditPosts() ([]*models.Post, error) {
+func getNewRedditPosts(feedUrl, source string) ([]*models.Post, error) {
 	conn := models.CloneConnection()
 	defer conn.Close()
 
 	// get the feed
-	feed, err := rss.Fetch(subredditUrl)
+	feed, err := rss.Fetch(feedUrl)
 	if err != nil {
 		return []*models.Post{}, err
 	}
@@ -49,7 +60,7 @@ func getNewRedditPosts() ([]*models.Post, error) {
 		if !exists {
 			post := &models.Post{
 				Title:       item.Title,
-				Source:      "reddit",
+				Source:      source,
 				Url:         item.Link,
 				UniqueId:    item.ID,
 				PublishedAt: item.Date,

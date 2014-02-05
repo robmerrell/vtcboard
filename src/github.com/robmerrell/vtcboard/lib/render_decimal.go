@@ -38,8 +38,8 @@ package lib
 
 import (
 	"math"
+	"regexp"
 	"strconv"
-	"strings"
 )
 
 var renderFloatPrecisionMultipliers = [10]float64{
@@ -197,7 +197,8 @@ func RenderFloatFromString(format, n string) string {
 
 func RenderInteger(format string, n int) string {
 	rendered := RenderFloat(format, float64(n))
-	return strings.TrimRight(rendered, ".00")
+	re := regexp.MustCompile("\\.00$")
+	return re.ReplaceAllString(rendered, "")
 }
 
 func RenderIntegerFromString(format, n string) string {

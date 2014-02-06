@@ -12,8 +12,9 @@ import (
 
 type Network struct{}
 
-// var networkBaseUrl = "http://explorer.vertcoin.org/chain/Vertcoin/q"
-var networkBaseUrl = "http://cryptexplorer.com/chain/VertCoin/q"
+var networkBaseUrl = "http://explorer.vertcoin.org/chain/Vertcoin/q"
+
+// var networkBaseUrl = "http://cryptexplorer.com/chain/VertCoin/q"
 
 // Update retrieves VTC netork information from a blockchain api.
 func (n *Network) Update() error {

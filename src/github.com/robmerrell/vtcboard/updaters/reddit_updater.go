@@ -21,6 +21,15 @@ func (r *Reddit) Update() error {
 		return err
 	}
 
+	vertcoinMiningPosts, err := getNewRedditPosts("http://www.reddit.com/r/vertcoinmining/.rss", "/r/vertcoinmining")
+	if err != nil {
+		return err
+	}
+
+	if err := savePosts(vertcoinMiningPosts, conn); err != nil {
+		return err
+	}
+
 	vertmarketPosts, err := getNewRedditPosts("http://www.reddit.com/r/vertmarket/.rss", "/r/vertmarket")
 	if err != nil {
 		return err

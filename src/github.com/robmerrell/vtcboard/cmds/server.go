@@ -72,6 +72,13 @@ func ServeAction() error {
 			return ""
 		}
 
+		// /r/vertmining posts
+		redditVertcoinMining, err := models.GetLatestPosts(conn, "/r/vertcoinmining", 8)
+		if err != nil {
+			webError(err, res)
+			return ""
+		}
+
 		// get the mining information
 		network, err := models.GetLatestNetworkSnapshot(conn)
 		if err != nil {
@@ -80,7 +87,13 @@ func ServeAction() error {
 		}
 
 		// generate the HTML
-		valueMap := map[string]interface{}{"redditVertcoin": redditVertcoin, "redditVertmarket": redditVertmarket, "forum": forum, "averages": parsedAverages}
+		valueMap := map[string]interface{}{
+			"redditVertcoin":       redditVertcoin,
+			"redditVertmarket":     redditVertmarket,
+			"redditVertcoinMining": redditVertcoinMining,
+			"forum":                forum,
+			"averages":             parsedAverages,
+		}
 		return mainView.Render(generateTplVars(price, network), valueMap)
 	})
 
@@ -96,7 +109,7 @@ func ServeAction() error {
 		// make sure the price has been updated in the last 2 hours
 		price, err := models.GetLatestPrice(conn)
 		if err != nil {
-			webError(err, res)
+			webError(errors.New("Error getting latest price"), res)
 			return ""
 		}
 
@@ -108,7 +121,7 @@ func ServeAction() error {
 		// make sure the network has been updated in the last two hours
 		network, err := models.GetLatestNetworkSnapshot(conn)
 		if err != nil {
-			webError(err, res)
+			webError(errors.New("Error getting latest network snapshot"), res)
 			return ""
 		}
 

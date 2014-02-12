@@ -32,7 +32,7 @@ func ServeAction() error {
 		panic(err)
 	}
 
-	m.Get("/", func(res http.ResponseWriter) string {
+	homeWriter := func(useBtc bool, res http.ResponseWriter) string {
 		conn := models.CloneConnection()
 		defer conn.Close()
 
@@ -49,7 +49,20 @@ func ServeAction() error {
 			webError(err, res)
 			return ""
 		}
-		parsedAverages := parseAverages(averages)
+		allAverages, err := addLatestPricesToAverages(conn, averages)
+		if err != nil {
+			webError(err, res)
+			return ""
+		}
+
+		var graphAverages, graphValueType string
+		if useBtc {
+			graphValueType = "BTC"
+			graphAverages = parseAverages(allAverages, true)
+		} else {
+			graphValueType = "USD"
+			graphAverages = parseAverages(allAverages, false)
+		}
 
 		// get the forum posts
 		forum, err := models.GetLatestPosts(conn, "forum", 8)
@@ -92,9 +105,28 @@ func ServeAction() error {
 			"redditVertmarket":     redditVertmarket,
 			"redditVertcoinMining": redditVertcoinMining,
 			"forum":                forum,
-			"averages":             parsedAverages,
+			"averages":             graphAverages,
+			"graphValueType":       graphValueType,
+			"showBtcLink":          !useBtc,
+			"showUsdLink":          useBtc,
 		}
+
 		return mainView.Render(generateTplVars(price, network), valueMap)
+	}
+
+	m.Get("/", func(res http.ResponseWriter) string {
+		return homeWriter(false, res)
+	})
+
+	m.Get("/:graphValue", func(params martini.Params, res http.ResponseWriter) string {
+		var useBtc bool
+		if params["graphValue"] == "usd" {
+			useBtc = false
+		} else {
+			useBtc = true
+		}
+
+		return homeWriter(useBtc, res)
 	})
 
 	// returns basic information about the state of the service. If any hardcoded checks fail
@@ -133,6 +165,7 @@ func ServeAction() error {
 		return "ok"
 	})
 
+	log.Printf("listening on port 4000")
 	http.ListenAndServe(":4000", m)
 
 	return nil
@@ -175,20 +208,65 @@ func generateTplVars(price *models.Price, network *models.Network) map[string]st
 }
 
 // parseAverages takes a slice of averages and returns a string representation for flot to graph
-func parseAverages(averages []*models.Average) string {
+func parseAverages(averages []*models.Average, useBtcField bool) string {
+	var format string
+	if useBtcField {
+		format = "[%g, %.8f]"
+	} else {
+		format = "[%g, %.2f]"
+	}
+
 	parsed := ""
 	for i, average := range averages {
-		if math.IsNaN(average.Cryptsy.Usd) {
+		if math.IsNaN(average.Cryptsy.Usd) || math.IsNaN(average.Cryptsy.Btc) {
 			continue
 		}
 
 		timeIndex := float64(average.TimeBlock.Unix()) * 1000.0
-		parsed += fmt.Sprintf("[%g, %.2f]", timeIndex, average.Cryptsy.Usd)
+		var value float64
+		if useBtcField {
+			value = average.Cryptsy.Btc
+		} else {
+			value = average.Cryptsy.Usd
+		}
 
-		if i < len(averages) {
+		parsed += fmt.Sprintf(format, timeIndex, value)
+
+		if i < len(averages)-1 {
 			parsed += ","
 		}
 	}
 
 	return parsed
+}
+
+// addLatestPriceToAverages appends the latest 10 minutes of price data onto the list of averages
+func addLatestPricesToAverages(conn *models.MgoConnection, averages []*models.Average) ([]*models.Average, error) {
+	// get times from the last 10 minutes
+	baseTime := time.Now().UTC().Truncate(time.Minute * 10)
+	beginning := baseTime.Add(time.Minute * -10)
+	end := baseTime.Add(time.Minute*-1 + time.Second*59)
+
+	// add the last 10 minutes of pricing data to the end
+	prices, err := models.GetPricesBetweenDates(conn, beginning, end)
+	if err != nil {
+		return []*models.Average{}, err
+	}
+
+	allAverages := make([]*models.Average, len(averages), len(averages))
+	copy(allAverages, averages)
+
+	for _, price := range prices {
+		average := &models.Average{
+			TimeBlock: price.GeneratedAt,
+			Cryptsy: &models.ExchangeAverage{
+				Btc: price.Cryptsy.Btc,
+				Usd: price.Cryptsy.Usd,
+			},
+		}
+
+		allAverages = append(allAverages, average)
+	}
+
+	return allAverages, nil
 }

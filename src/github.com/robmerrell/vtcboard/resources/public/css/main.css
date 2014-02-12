@@ -107,6 +107,10 @@ ul.news-body li {
   padding-bottom: 15px;
 }
 
+.graphCurrency {
+  white-space: nowrap;
+}
+
 #priceChart {
   height: 350px;
   min-width: 200px;

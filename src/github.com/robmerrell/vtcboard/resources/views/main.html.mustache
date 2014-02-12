@@ -70,7 +70,13 @@
       </section>
 
       <section>
-        <div class="section-title">24 HOURS (CRYPTSY/USD)</div>
+        <div class="section-title">24 HOURS (CRYPTSY/{{graphValueType}})</div>
+        {{#showBtcLink}}
+        <a href="/btc" class="graphCurrency">Show BTC</a>
+        {{/showBtcLink}}
+        {{#showUsdLink}}
+        <a href="/" class="graphCurrency">Show USD</a>
+        {{/showUsdLink}}        
         <div id="priceChart"></div>
       </section>
 
